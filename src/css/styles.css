@@ -2,3 +2,15 @@ body {
   background: black;
   color: wheat;
 }
+
+.gallery {
+  display: flex;
+  flex-flow: row wrap;
+}
+.gallery li {
+  margin: 20px;
+}
+
+.isHiden {
+  display: none;
+}

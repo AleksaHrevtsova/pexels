@@ -1,7 +1,7 @@
 import template from "../templates/item.hbs";
 
 export default {
-  query: "",
+  query: "moon",
   page: 1,
   perPage: 3,
   baseUrl: `https://api.pexels.com/v1`,
@@ -13,7 +13,7 @@ export default {
     return (this.query = val);
   },
 
-  getFetch(val = this.query, z) {
+  async getFetch(val = this.query, z) {
     // let key = "563492ad6f91700001000001390f9fee0a794c1182a72e49e0e0eae2";
     let key = `563492ad6f917000010000013bbd01457a39431887d74f69015c0d48`;
     // полученное через параметры, значение из инпута сохраняет в свойство query через сеттер
@@ -34,24 +34,19 @@ export default {
     };
 
     // собственно запрос и обработка ответа на него
-    return fetch(url, options)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        return data.photos;
-      })
-      .then((result) => {
-        const items = template(result);
-        z.insertAdjacentHTML("beforeend", items);
-        setTimeout(() => {
-          window.scrollTo({
-            top: z.scrollHeight,
-            behavior: "smooth",
-          });
-        }, 0);
-        return z;
-      });
+    const response = await fetch(url, options);
+    const result = await response.json();
+    const data = result.photos;
+
+    console.log(data);
+    const items = template(data);
+    z.insertAdjacentHTML("beforeend", items);
+
+    window.scrollTo({
+      top: z.scrollHeight,
+      behavior: "smooth",
+    });
+    return z;
   },
 
   // метод добавления страницы
